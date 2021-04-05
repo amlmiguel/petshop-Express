@@ -7,21 +7,20 @@ bancoDados = JSON.parse(bancoDados);
 
 const petshop = {
     atualizarBanco: () => {
-        //conversão de objeto javascript para JSON
         let petsAtualizado = JSON.stringify(bancoDados, null, 2);
-        //atualização do arquivo bancoDados.json
         fs.writeFileSync('bancoDados.json', petsAtualizado, 'utf-8');
     },
     listarPets: () => {
+        let textoListarPets = "PETSHOP \n"
 
         bancoDados.pets.forEach((pet) => {
-    
-            console.log(`${pet.nome}, ${pet.idade} anos, ${pet.tipo}, ${pet.raca}, ${(pet.vacinado) ? 'vacinado': 'não vacinado'}`);
-        
+            textoListarPets += (`${pet.nome}, ${pet.idade} anos, ${pet.tipo}, ${pet.raca}, ${(pet.vacinado)  ? 'vacinado': 'não vacinado'} \n`);
             pet.servicos.forEach((servico) => {
-                console.log(`${servico.data} - ${servico.nome}`);
+                textoListarPets += (`${servico.data} - ${servico.nome}`);
             })
         })
+
+        return textoListarPets;
     },
     vacinarPet: pet => {
         if (!pet.vacinado) {
@@ -55,7 +54,7 @@ const petshop = {
             bancoDados.pets.push(novoPet);
         })
     
-        atualizarBanco();
+        petshop.atualizarBanco();
         novosPets.forEach((pet) => {
             console.log(`${pet.nome} foi adicionado com sucesso!`);
         })
@@ -95,7 +94,7 @@ const petshop = {
             return pet.nome == nomePet;
         });
     
-        return petEncontrado ? petEncontrado : `Nenhum pet encontrado com nome ${nomePet}`;
+        return petEncontrado ? petEncontrado : console.log(`Nenhum pet encontrado com nome ${nomePet}`);
     },
     filtrarTipoPet: (tipoPet) => {
         // && E - AND
